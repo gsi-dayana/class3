@@ -3,20 +3,24 @@ package selenium_cucumber.selenium_cucumber.goheavy.vehicles.page;
 import org.openqa.selenium.By;
 import selenium_cucumber.selenium_cucumber.general.PageObject;
 import selenium_cucumber.selenium_cucumber.general.Setup;
+import selenium_cucumber.selenium_cucumber.google.invalidDataMessages;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 public class VehiculeFeaturesPage extends TabsPage {
-    private String stepTwoFormScroll;
+    private String stepTwoFormScroll = "//*[@id='step-one-form']/ancestor::div["
+            + "@class='templateStyles__ContentDiv-sc-144t9h2-1 bcVeZj']";;
     private String vehiclePhotoImageXpath;
-    // ---> VIEW 2 <---
+
+    By vehicleModelLocator = By.id("model");
+    By vehicleColorLocator = By.id("color");
+    By vehicleTrimLocator = By.id("trim");
+    By vehicleTransmissionLocator = By.id("transmission");
     String path = "/ancestor::div[contains(@class,'ant-form-item')]/descendant::div[@role='alert']";
-    By vehicleModelErrorSMSLocator = By.id("model");
-    By vehicleColorErrorSMSLocator = By.id("color");
-    By vehicleTrimErrorSMSLocator = By.id("trim");
-    By vehicleTransmissionErrorSMSLocator = By.id("transmission");
-    // ---> VIEW 3 <---
-    By insurancePolicyErrorSMSLocator = By.id("insurancePolicyNo");
+    By vehicleModelErrorSMSLocator = By.xpath("//input[@id='model']"+path);
+    By vehicleColorErrorSMSLocator = By.xpath("//input[@id='color']"+path);
+    By vehicleTrimErrorSMSLocator = By.xpath("//input[@id='trim']"+path);
+    By vehicleTransmissionErrorSMSLocator = By.xpath("//input[@id='transmission']"+path);
 
     public VehiculeFeaturesPage() {
         super();
@@ -80,11 +84,20 @@ public class VehiculeFeaturesPage extends TabsPage {
     }
 
     public void insertInvalidData() {
-        //TODO
+        sendDataToInput(getWebElement(vehicleModelLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
+        sendDataToInput(getWebElement(vehicleColorLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
+        sendDataToInput(getWebElement(vehicleTrimLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
+        sendDataToInput(getWebElement(vehicleTransmissionLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
+        clicks_button_done();
     }
 
     public void checkErrorSMS() {
-        //TODO
+        checkSMSAndClear("Vehicle Model",vehicleModelErrorSMSLocator, invalidDataMessages.numbersAndLetters,vehicleModelLocator);
+        checkSMSAndClear("Vehicle Color",vehicleColorErrorSMSLocator,invalidDataMessages.color,vehicleColorLocator);
+        checkSMSAndClear("Vehicle Trim",vehicleTrimErrorSMSLocator,invalidDataMessages.numbersAndLetters,vehicleTrimLocator);
+        checkSMSAndClear("Vehicle Transmission",vehicleTransmissionErrorSMSLocator,invalidDataMessages.letters,vehicleTrimLocator);
+
+        insertInvalidData();
     }
 
 }
