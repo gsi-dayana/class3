@@ -43,11 +43,15 @@ public class VehiculeInfoPage extends TabsPage {
     By HDimensionErrorSMSLocator = By.xpath("//input[@id='height']"+path+"[3]");
     By payloadErrorSMSLocator = By.xpath("//input[@id='payload']"+path);
 
+    By vehicleInfoCheck = By.xpath("//span[@role='img' and @aria-label='check']/" +
+            "ancestor::div[@class='ant-steps-item-container']/descendant::div[@class='ant-steps-item-title']");
 
+    VehiculeFeaturesPage vehiculeFeaturesPage;
 
     public VehiculeInfoPage() {
         super();
         po = new PageObject();
+        vehiculeFeaturesPage = new VehiculeFeaturesPage();
         setVINImageUploadItemXpath("//label[@class='ant-form-item-required' and @title='VIN Image']/"
                 + "ancestor::div[@class='ant-row ant-form-item']/descendant::input[@type='file']");
         setVINInputID("vin");
@@ -68,6 +72,10 @@ public class VehiculeInfoPage extends TabsPage {
         setHeigthXpath("//input[@id='height']");
         setVehicleTypeXpath("//input[@id='vehicleTypeId']");
         setPayloadXpath("//input[@id='payload']");
+    }
+
+    public WebElement getVehicleInfoCheck() {
+        return getWebElement(vehicleInfoCheck);
     }
 
     public By getPayloadErrorSMSLocator() {
@@ -280,6 +288,8 @@ public class VehiculeInfoPage extends TabsPage {
         waitForSpinningElementDissapear();
         Setup.getWait().thread(1500);
 
+        //ONLY ADDED FOR SCENARIO 3
+        vehiculeFeaturesPage.insertInvalidData();
     }
 
     private void fillDimensions() {
@@ -373,9 +383,7 @@ public class VehiculeInfoPage extends TabsPage {
         sendDataToInput(getWebElement(By.id(getVehiclePayloadID())), getFaker().regexify("[1-9]\\.[1-9]{3,5}"), null, getFormScroll());
 
         scrollToWebElement(null, getFormScroll());
-        clickOn(getWebElement(By.xpath("//button[@type='submit']/descendant::span[text()='Next']")));
-        //waitForSpinningElementDissapear();
-        //Setup.getWait().thread(1500);
+        //clickOn(getWebElement(By.xpath("//button[@type='submit']/descendant::span[text()='Next']")));
     }
 
     public void checkSMSAndClear(String fieldName,By fieldErrorSMS, invalidDataMessages ExpectedSMS,String fieldElement) {

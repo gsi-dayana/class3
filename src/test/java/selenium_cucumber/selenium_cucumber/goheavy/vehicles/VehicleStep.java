@@ -85,10 +85,10 @@ public class VehicleStep extends Steps {
         try {
             TabsPage tp = new VehiculeInfoPage();
             tp.insertInvalidData();
-            tp = new VehiculeFeaturesPage();
-            tp.insertInvalidData();
-            tp = new DrivingRequirementsPage();
-            tp.insertInvalidData();
+//            tp = new VehiculeFeaturesPage();
+//            tp.insertInvalidData();
+//            tp = new DrivingRequirementsPage();
+//            tp.insertInvalidData();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
         }

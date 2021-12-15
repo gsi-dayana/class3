@@ -35,6 +35,8 @@ public class VehiclePage extends PageObject {
     private String vehicleInsuranceImageXpath = "//label[@class='ant-form-item-required' and "
             + "@title='Current Insurance Certificate Picture']/ancestor::div[@class='ant-row ant-form-item']/descendant::input"
             + "[@type='file']";
+    By check = By.xpath("//span[@role='img' and @aria-label='check']/" +
+            "ancestor::div[@class='ant-steps-item-container']/descendant::div[@class='ant-steps-item-title']");
 
     public VehiclePage() {
         super();
@@ -58,6 +60,9 @@ public class VehiclePage extends PageObject {
         this.urlpath = "/vehicleinsurance";
     }
 
+    public WebElement getCheckText() {
+        return getWebElement(check);
+    }
 
     private String getVehicleCapacitySubSectionXpath() {
         return vehicleCapacitySubSectionXpath;

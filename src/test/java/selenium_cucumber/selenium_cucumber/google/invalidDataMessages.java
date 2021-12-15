@@ -9,5 +9,7 @@ public enum invalidDataMessages {
     color,
     trim,
     insurance,
-    license
+    license,
+    policy,
+    plate
 }

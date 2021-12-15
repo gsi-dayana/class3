@@ -21,11 +21,12 @@ public class VehiculeFeaturesPage extends TabsPage {
     By vehicleColorErrorSMSLocator = By.xpath("//input[@id='color']"+path);
     By vehicleTrimErrorSMSLocator = By.xpath("//input[@id='trim']"+path);
     By vehicleTransmissionErrorSMSLocator = By.xpath("//input[@id='transmission']"+path);
+    DrivingRequirementsPage drivingRequirementsPage;
 
     public VehiculeFeaturesPage() {
         super();
-        setVehiclePhotoImageXpath("//label[@title='Vehicle Photo (from front driver side angle)']/" +
-                "ancestor::div[@class='ant-row ant-form-item']/ descendant::input[@type='file']");
+        drivingRequirementsPage = new DrivingRequirementsPage();
+        setVehiclePhotoImageXpath("//input[@type='file']");
         setStepTwoFormScroll("//*[@id='step-two-form']/ancestor::div[@class='templateStyles__ContentDiv-sc-144t9h2-1 bcVeZj']");
     }
 
@@ -71,33 +72,37 @@ public class VehiculeFeaturesPage extends TabsPage {
             clickOn(getWebElement(By.xpath("//label[@title='Liftgate Installed']/ancestor::" +
                     "div[@class='ant-row ant-form-item']/descendant::button[@type='button']")));
 
-        setImage(getWebElement(By.xpath(getVehiclePhotoImageXpath())), null);
-
         scrollToWebElement(null, getStepTwoFormScroll());
+        setImage(getWebElement(By.xpath(getVehiclePhotoImageXpath())), null);
 
         clickOn(getWebElement(By.xpath("//button[@type='submit']/descendant::span[text()='Next']")));
         waitForSpinningElementDissapear();
         Setup.getWait().thread(1500);
+
+        //ONLY ADDED FOR SCENARIO 3
+        drivingRequirementsPage.insertInvalidData();
     }
     public boolean systemOpensAddVehicleView() {
         return true;
     }
 
     public void insertInvalidData() {
+        waitForSpinningElementDissapear();
         sendDataToInput(getWebElement(vehicleModelLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
         sendDataToInput(getWebElement(vehicleColorLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
         sendDataToInput(getWebElement(vehicleTrimLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
         sendDataToInput(getWebElement(vehicleTransmissionLocator),getFaker().regexify("[a-z1-9._%+-]{10}"), null,getStepTwoFormScroll());
         clicks_button_done();
+        checkErrorSMS();
     }
 
     public void checkErrorSMS() {
         checkSMSAndClear("Vehicle Model",vehicleModelErrorSMSLocator, invalidDataMessages.numbersAndLetters,vehicleModelLocator);
-        checkSMSAndClear("Vehicle Color",vehicleColorErrorSMSLocator,invalidDataMessages.color,vehicleColorLocator);
-        checkSMSAndClear("Vehicle Trim",vehicleTrimErrorSMSLocator,invalidDataMessages.numbersAndLetters,vehicleTrimLocator);
+        checkSMSAndClear("Vehicle Color",vehicleColorErrorSMSLocator,invalidDataMessages.letters,vehicleColorLocator);
+        checkSMSAndClear("Vehicle Trim",vehicleTrimErrorSMSLocator,invalidDataMessages.trim,vehicleTrimLocator);
         checkSMSAndClear("Vehicle Transmission",vehicleTransmissionErrorSMSLocator,invalidDataMessages.letters,vehicleTrimLocator);
 
-        insertInvalidData();
+        insertValidData();
     }
 
 }

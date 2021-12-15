@@ -28,11 +28,15 @@ public abstract class TabsPage extends VehiclePage {
                 case color:
                     return "Please, enter letters only. 10 characters maximum";
                 case trim:
-                    return "Only letters, numbers and the special characters (' -) are allowed. 250 characters maximum";
+                    return "Only letters and the special character '-' are allowed. 250 characters maximum";
                 case insurance:
                     return "Only letters, numbers and the special character \'-\' are allowed. 15 characters maximum";
                 case license:
                     return "Only letters, numbers and the special character \'-\' are allowed. 10 characters maximum";
+                case policy:
+                    return "Only letters and the special character \'-\' are allowed. 15 characters maximum";
+                case plate:
+                    return "Only letters and the special character \'-\' are allowed. 10 characters maximum";
             }
 
         } catch (Exception e) {
